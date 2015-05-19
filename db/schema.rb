@@ -11,6 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20150519082719) do
+
+  create_table "daily_prices", force: :cascade do |t|
+    t.date     "date",                     null: false
+    t.decimal  "open",       default: 0.0
+    t.decimal  "high",       default: 0.0
+    t.decimal  "low",        default: 0.0
+    t.decimal  "close",      default: 0.0, null: false
+    t.integer  "volumn",     default: 0
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "futures_targets", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.string   "info"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "futures_targets", ["name"], name: "index_futures_targets_on_name", unique: true
 
 end
