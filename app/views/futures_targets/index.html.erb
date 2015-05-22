@@ -1,2 +1,53 @@
-hi
-<%= @ft.daily_prices %>
+
+<div class="demo-container">
+  <div id="placeholder" style="width:1000px; height: 500px"></div>
+</div>
+
+<div class="demo-container">
+  <div id="overview" style="width:1000px; height: 150px"></div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+  var data = <%= @future_prices %>
+
+  var options = {
+    canvas: true,
+    xaxes: [ { mode: "time" } ],
+    selection: {
+      mode: "x"
+    }
+  }
+
+  var plot = $.plot("#placeholder", [ data ], options );
+  var overview = $.plot("#overview", [ data ], {
+    xaxis: {
+      mode: "time"
+    },
+    selection: {
+      mode: "x"
+    }
+  });
+
+  // now connect the two
+
+  $("#placeholder").bind("plotselected", function (event, ranges) {
+
+    // do the zooming
+    plot = $.plot("#placeholder", [data],
+      $.extend(true, {}, options, {
+        xaxis: { min: ranges.xaxis.from, max: ranges.xaxis.to }
+      })
+    );
+
+    // don't fire event on the overview to prevent eternal loop
+
+    overview.setSelection(ranges, true);
+  });
+
+  $("#overview").bind("plotselected", function (event, ranges) {
+    plot.setSelection(ranges);
+  });
+
+});
+</script>

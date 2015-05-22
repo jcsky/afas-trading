@@ -16,3 +16,4 @@
 //= require_tree .
 //= require jquery.flot.js
 //= require jquery.flot.time.js
+//= require jquery.flot.selection.js
